@@ -42,7 +42,7 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 */application.properties
-
+*region20.students.model.Student/
 
 #============ FrontEnd: =============
 
@@ -71,7 +71,7 @@ speed-measure-plugin.json
 *.sublime-workspace
 
 # IDE - VSCode
-*.vscode/*
+frontend/.vscode/*
 # !.vscode/settings.json
 # !.vscode/tasks.json
 # !.vscode/launch.json
@@ -94,3 +94,6 @@ Thumbs.db
 .env
 access.log
 frontend/src/environments/**
+frontend/karma*
+frontend/tslint*
+frontend/browserslist
