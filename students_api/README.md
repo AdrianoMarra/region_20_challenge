@@ -1,3 +1,1 @@
-# students_api
-Application for managing students registration
-
+# Students Application API
