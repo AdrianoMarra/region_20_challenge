@@ -4,7 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import region20.students.model.Student;
 import region20.students.service.HibernateSearchService;
 import region20.students.service.StudentService;
@@ -12,6 +22,7 @@ import region20.students.service.StudentService;
 import javax.validation.Valid;
 import java.util.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value="/api/students", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StudentController {
@@ -23,10 +34,35 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping()
-    public ResponseEntity<List<Student>> getAllStudents() {
+    public ResponseEntity<List<Student>> search(@RequestParam(value = "name", required = false) String name,
+                                                @RequestParam(value = "studentId", required = false) String studentId,
+                                                @RequestParam(value = "schoolYear", required = false) Integer schoolYear,
+                                                @RequestParam(value = "campus", required = false) String campus,
+                                                @RequestParam(value = "entryDate", required = false) String entryDate,
+                                                @RequestParam(value = "gradeLevel", required = false) Integer gradeLevel) {
 
-        List<Student> students = studentService.findAll();
-        return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
+        List<Student> searchResults = null;
+
+        // If the search params are empty simply return all students.
+        if (name == null && studentId == null &&
+            schoolYear == null && campus == null &&
+            entryDate == null && gradeLevel == null) {
+
+            searchResults = studentService.findAll();
+            return new ResponseEntity<List<Student>>(searchResults, HttpStatus.OK);
+        }
+
+        try {
+            // Call the function bellow only to rebuid indexes.
+//            searchservice.initializeHibernateSearch();
+            searchResults = searchservice.fuzzySearch(name, studentId, schoolYear, campus, entryDate, gradeLevel);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return new ResponseEntity<List<Student>>(searchResults, HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/{id}")
@@ -64,35 +100,6 @@ public class StudentController {
         Optional<Student> student = studentService.findOne(id);
         studentService.delete(id);
         return new ResponseEntity<Student>(student.get(), HttpStatus.OK);
-    }
-
-
-    @GetMapping(value = "search/")
-    public ResponseEntity<List<Student>> search(@RequestParam(value = "name", required = false) String name,
-                                                @RequestParam(value = "schoolYear", required = false) Integer schoolYear,
-                                                @RequestParam(value = "campus", required = false) String campus,
-                                                @RequestParam(value = "entryDate", required = false) String entryDate,
-                                                @RequestParam(value = "gradeLevel", required = false) Integer gradeLevel) {
-
-        List<Student> searchResults = null;
-
-        // If the search params are empty return all students.
-        if (name == null && schoolYear == null && campus == null && entryDate == null && gradeLevel == null) {
-            searchResults = studentService.findAll();
-            return new ResponseEntity<List<Student>>(searchResults, HttpStatus.OK);
-        }
-
-        try {
-                // Call the initializeHibernateSearch() function only if index rebuild needed:
-//            searchservice.initializeHibernateSearch();
-            searchResults = searchservice.fuzzySearch(name, schoolYear, campus, entryDate, gradeLevel);
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return new ResponseEntity<List<Student>>(searchResults, HttpStatus.OK);
-
     }
 
 }

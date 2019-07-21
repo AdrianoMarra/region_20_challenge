@@ -1,10 +1,16 @@
 package region20.students.model;
 
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Field;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+
+import javax.validation.constraints.NotEmpty;
 
 @Indexed
 @Entity
@@ -49,7 +55,7 @@ public class Student {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -57,7 +63,7 @@ public class Student {
 	}
 
 	public Integer getSchoolYear() {
-		return schoolYear;
+		return this.schoolYear;
 	}
 
 	public void setSchoolYear(Integer schoolYear) {
@@ -65,7 +71,7 @@ public class Student {
 	}
 
 	public String getCampus() {
-		return campus;
+		return this.campus;
 	}
 
 	public void setCampus(String campus) {
@@ -73,7 +79,7 @@ public class Student {
 	}
 
 	public String getStudentId() {
-		return studentId;
+		return this.studentId;
 	}
 
 	public void setStudentId(String studentId) {
@@ -81,7 +87,7 @@ public class Student {
 	}
 
 	public String getEntryDate() {
-		return entryDate;
+		return this.entryDate;
 	}
 
 	public void setEntryDate(String entryDate) {
@@ -89,7 +95,7 @@ public class Student {
 	}
 
 	public Integer getGradeLevel() {
-		return gradeLevel;
+		return this.gradeLevel;
 	}
 
 	public void setGradeLevel(Integer gradeLevel) {
