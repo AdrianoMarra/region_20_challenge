@@ -20,7 +20,8 @@ template: `
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
-                        <input class="form-control" type="search" placeholder="Type student first or last name" aria-label="Search" [formControl]="myForm.get('name')">
+                        <input class="form-control" type="search" placeholder="Type student first or last name" aria-label="Search"
+                            [formControl]="myForm.get('name')">
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -30,7 +31,8 @@ template: `
 
                 <div class="col-md-3 mb-3">
                     <label for="validationCustom02">Campus</label>
-                    <input type="text" class="form-control" id="campus" placeholder="Type a campus code" [formControl]="myForm.get('campus')">
+                    <input type="text" class="form-control" id="campus" placeholder="Type a campus code"
+                        [formControl]="myForm.get('campus')">
                 </div>
 
                 <div class="col-md-3 mb-3">
@@ -55,7 +57,7 @@ template: `
                     <input type="text" class="form-control" placeholder="Entry date" [formControl]="myForm.get('name')">
                 </div>
             </div>
-            <button type="button" (click)="clearForm()" (click)="updateSearch()"  value="Reset">Reset</button>
+            <a class="cursor-pointer" (click)="clearForm()" (click)="updateSearch()">Clear search</a>
         </form>
     </div>
 `,
@@ -72,6 +74,10 @@ styles: [`
         background: white;
         color: #495057;
         outline: none;
+    }
+    .cursor-pointer {
+        cursor: pointer;
+        color: #007bff !important;
     }
 `]
 })

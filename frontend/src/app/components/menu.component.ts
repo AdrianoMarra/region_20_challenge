@@ -10,16 +10,18 @@ import { Component, OnInit } from '@angular/core';
   <div>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['students']" style="border: white solid 1px;
-        border-radius: 5px;">Manage Students</a>
+        <a class="nav-link" [routerLink]="['students']">Manage Students</a>
       </li>
     </ul>
   </div>
 </nav>
   `,
-  styles: [`.nav-link {
+  styles: [`
+    .nav-link {
       margin-left: 10px;
       padding: 8px;
+      border: white solid 1px;
+      border-radius: 5px;
   }`],
 })
 export class MenuComponent {}

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { StudentsService } from '../services/students.service';
 
 @Component({
@@ -22,17 +22,20 @@ import { StudentsService } from '../services/students.service';
   </div>
 
   <div class="row mx-5 my-4" *ngIf="results">
-      <div class="col-md-12 col-lg-6"  *ngFor="let user of results">
-          <student-card [student]=user></student-card>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4"  *ngFor="let user of results">
+          <app-card [student]=user></app-card>
       </div>
   </div>
 
   <div class="pagination justify-content-center" *ngIf="results">
-    <ngb-pagination [pageSize]=6 [rotate]=true [collectionSize]=results.total_elements [(page)]=results.current_page aria-label="Default pagination" (pageChange)="onPageChange($event)"></ngb-pagination>
+    <ngb-pagination [pageSize]=6 [rotate]=true
+      [collectionSize]=results.total_elements [(page)]=results.current_page
+      aria-label="Default pagination" (pageChange)="onPageChange($event)">
+    </ngb-pagination>
   </div>
 `,
-styles: [
-  `h3, h5 {
+  styles: [`
+  h3, h5 {
     font-weight: 300;
   }
   .loading {
@@ -50,8 +53,7 @@ styles: [
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%) }
-  } `
-]
+  }`]
 })
 export class ResultsComponent {
   results: any;

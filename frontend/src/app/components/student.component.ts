@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { StudentsService } from '../services/students.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'student',
+  selector: 'app-student',
   template: `
 
   <div class="container">
@@ -23,39 +23,46 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
         <form [formGroup]="myForm" (ngSubmit)="submitStudentForm()">
           <div class="form-group">
             <label for="job">Name:</label>
-            <input type="text" class="form-control" name="name" [formControl]="myForm.get('name')" [value]="myForm.value.name" placeholder="full name" required>
+            <input type="text" class="form-control" name="name"
+              [formControl]="myForm.get('name')" [value]="myForm.value.name" placeholder="full name" required>
           </div>
 
           <div class="form-group">
             <label for="job">Student ID:</label>
-            <input type="text" class="form-control" name="studentId" [formControl]="myForm.get('studentId')" [value]="myForm.value.studentId" placeholder = "6 digits" required>
+            <input type="text" class="form-control" name="studentId"
+              [formControl]="myForm.get('studentId')" [value]="myForm.value.studentId" placeholder = "6 digits" required>
           </div>
 
           <div class="form-group">
             <label for="job">Campus:</label>
-            <input type="text" class="form-control" name="campus" [formControl]="myForm.get('campus')" [value]="myForm.value.campus" placeholder = "campus code" required>
+            <input type="text" class="form-control" name="campus"
+              [formControl]="myForm.get('campus')" [value]="myForm.value.campus" placeholder = "campus code" required>
           </div>
 
           <div class="form-group">
             <label for="job">School Year:</label>
-            <input type="number" class="form-control" name="schoolYear" [formControl]="myForm.get('schoolYear')" [value]="myForm.value.schoolYear" placeholder = "yyyy" required>
+            <input type="number" class="form-control" name="schoolYear"
+              [formControl]="myForm.get('schoolYear')" [value]="myForm.value.schoolYear" placeholder = "yyyy" required>
           </div>
 
           <div class="form-group">
             <label for="job">Grade Level:</label>
-            <input type="number" class="form-control" name="gradeLevel" [formControl]="myForm.get('gradeLevel')" [value]="myForm.value.gradeLevel" required>
+            <input type="number" class="form-control" name="gradeLevel"
+              [formControl]="myForm.get('gradeLevel')" [value]="myForm.value.gradeLevel" required>
           </div>
 
           <div class="form-group">
             <label for="job">Entry Date:</label>
-            <input type="text" class="form-control" name="entryDate" [formControl]="myForm.get('entryDate')" [value]="myForm.value.entryDate" placeholder = "yyyy-mm-dd" required>
+            <input type="text" class="form-control" name="entryDate"
+              [formControl]="myForm.get('entryDate')" [value]="myForm.value.entryDate" placeholder = "yyyy-mm-dd" required>
           </div>
 
           <div class="form-group">
             <input type="hidden" class="form-control" name="id" [formControl]="myForm.get('id')" [value]="myForm.value.id" required>
           </div>
 
-          <button type="submit" class="btn btn-primary"> Save </button>
+          <button type="submit" class="btn btn-primary mr-3"> Save </button>
+          <button type="button" class="btn btn-warning" (click)="modal.dismiss('Cancell click')"> Cancel </button>
         </form>
       </div>
     </ng-template>
@@ -82,8 +89,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
             <td>{{student.gradeLevel}}</td>
             <td>{{student.entryDate}}</td>
             <td>
-              <button class="btn btn-primary mr-3" id="remove" (click)="editStudent(student.id)" (click)="open(content)">Edit</button>
-              <button class="btn btn-danger" id="remove" (click)="deleteStudent(student.id)">Delete</button>
+              <button class="btn btn-primary mr-3" (click)="editStudent(student.id)" (click)="open(content)">Edit</button>
+              <button class="btn btn-danger" (click)="deleteStudent(student.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -106,8 +113,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   }
   .close {
     outline: none;
-  }
-    `]
+  }`]
 })
 export class StudentComponent {
   myForm: FormGroup;
@@ -153,19 +159,15 @@ export class StudentComponent {
   }
 
   editStudent(id) {
-    this.studentService.getStudent(id).subscribe((res: any) => {
-      this.myForm = this.fb.group({
-        'id': res.id,
-        'name': res.name,
-        'studentId': res.studentId,
-        'campus': res.campus,
-        'schoolYear': res.schoolYear,
-        'gradeLevel': res.gradeLevel,
-        'entryDate': res.entryDate
-      });
-
-    }, (err) => {
-      console.log('error', err);
+    const student = this.getStudent(this.students, id);
+    this.myForm = this.fb.group({
+      id: student.id,
+      name: student.name,
+      studentId: student.studentId,
+      campus: student.campus,
+      schoolYear: student.schoolYear,
+      gradeLevel: student.gradeLevel,
+      entryDate: student.entryDate
     });
   }
 
@@ -180,29 +182,30 @@ export class StudentComponent {
 
   removeStudent(arr, value) {
     return arr.filter((elem) => {
-      return elem.id != value.id;
+      return elem.id !== value.id;
     });
+  }
+
+  getStudent(arr, id) {
+    return arr.filter((elem) => {
+      return elem.id === id;
+    })[0];
   }
 
   clearForm() {
     this.myForm = this.fb.group({
-      'id': '',
-      'name': '',
-      'studentId': '',
-      'campus': '',
-      'schoolYear': '',
-      'gradeLevel': '',
-      'entryDate': ''
+      id: '',
+      name: '',
+      studentId: '',
+      campus: '',
+      schoolYear: '',
+      gradeLevel: '',
+      entryDate: ''
     });
   }
 
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then((result) => {
-        console.log(result);
-      }, (reason) => {
-        console.log(reason);
-      });
+      .open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 }
