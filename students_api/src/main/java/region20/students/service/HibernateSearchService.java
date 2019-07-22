@@ -43,7 +43,7 @@ public class HibernateSearchService {
     }
 
     @Transactional
-    public List<Student> fuzzySearch(String name, String studentId, Integer schoolYear, String campus, String entryDate, Integer gradeLevel) {
+    public List<Student> executeSearch(String name, String studentId, Integer schoolYear, String campus, String entryDate, Integer gradeLevel) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Student.class).get();
             	
@@ -102,11 +102,15 @@ public class HibernateSearchService {
                     , Occur.MUST);
         }
 
-//        if (entryDate != null) {
-//
-//            builder.add(qb.keyword().fuzzy().withEditDistanceUpTo(1).withPrefixLength(1).onFields("entryDate")
-//                    .matching(entryDate).createQuery(), Occur.MUST);
-//        }
+        if (entryDate != null) {
+
+            builder.add(qb.phrase()
+                        .onField("entryDate")
+                        .sentence(entryDate)
+                        .createQuery()
+                    , Occur.MUST);
+
+        }
 
         Query luceneQuery = builder.build();
         javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Student.class);

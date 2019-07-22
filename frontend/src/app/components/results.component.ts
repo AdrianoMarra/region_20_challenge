@@ -27,12 +27,12 @@ import { StudentsService } from '../services/students.service';
       </div>
   </div>
 
-  <div class="pagination justify-content-center" *ngIf="results">
+  <!--div class="pagination justify-content-center" *ngIf="results">
     <ngb-pagination [pageSize]=6 [rotate]=true
       [collectionSize]=results.total_elements [(page)]=results.current_page
       aria-label="Default pagination" (pageChange)="onPageChange($event)">
     </ngb-pagination>
-  </div>
+  </div-->
 `,
   styles: [`
   h3, h5 {
@@ -56,9 +56,9 @@ import { StudentsService } from '../services/students.service';
   }`]
 })
 export class ResultsComponent {
-  results: any;
-  total: number;
-  isLoading: any;
+  private results: any;
+  private total: number;
+  private isLoading: any;
 
   constructor(private studentService: StudentsService) {
     this.studentService.resultsObservable.subscribe(value => {

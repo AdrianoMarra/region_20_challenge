@@ -17,7 +17,7 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
                 <strong>School year:</strong> {{student.schoolYear}}
               </p>
               <p class="card-text mb-0 ml-2">
-                <strong>Entry date:</strong> {{student.entryDate}}
+                <strong>Entry date:</strong> {{student.entryDate | date:'MM/dd/yyyy'}}
               </p>
               <p class="card-text mb-0 ml-2">
                 <strong>Grade level:</strong> {{ student.gradeLevel }}
@@ -53,12 +53,5 @@ styles: [`
 
 export class CardComponent {
     @Input() student: any;
-
-    public isCollapsed = false;
-    userImage = './assets/images/user_default_icon.png';
-
-    constructor(config: NgbModalConfig, private modalService: NgbModal) {
-        config.backdrop = 'static';
-        config.keyboard = false;
-    }
+    private userImage = './assets/images/user_default_icon.png';
 }

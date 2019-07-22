@@ -39,6 +39,7 @@ public class Student {
 	private String campus;
 
 	@Column(name = "entry_date")
+	@NotEmpty(message = "*Please provide an entry date")
 	@Field
 	private String entryDate;
 

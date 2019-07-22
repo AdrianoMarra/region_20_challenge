@@ -5,8 +5,8 @@ import { StudentsService } from '../services/students.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
-selector: 'app-search',
-template: `
+    selector: 'app-search',
+    template: `
     <h1 class="mx-5 mt-4 mb-3">Students search applicaton </h1>
 
     <div class="px-5">
@@ -38,7 +38,7 @@ template: `
                 <div class="col-md-3 mb-3">
                     <label for="validationCustom03">Grade Level</label>
                     <div class="w-100">
-                        <select formControlName="gradeLevel" (change)="gradeLevelOnChange($event.target.value)">
+                        <select formControlName="gradeLevel" (change)="updateSearch()">
                             <option *ngFor="let gl of gradeLevels" [ngValue]="gl" [selected]="gradeLevels">{{gl}}</option>
                         </select>
                     </div>
@@ -47,21 +47,22 @@ template: `
                 <div class="col-md-3 mb-3">
                     <label for="validationCustom02">School Year</label>
                     <div ngbDropdown class="d-inline-block w-100">
-                        <select formControlName="schoolYear" (change)="schoolYearOnChange($event.target.value)">
+                        <select formControlName="schoolYear" (change)="updateSearch()">
                             <option *ngFor="let sy of schoolYears" [ngValue]="sy" [selected]="schoolYears">{{sy}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="validationCustom05">Entry Date</label>
-                    <input type="text" class="form-control" placeholder="Entry date" [formControl]="myForm.get('name')">
+                    <label>Entry Date</label>
+                    <input type="date" class="form-control" (change)="updateSearch()"
+                        [formControl]="myForm.get('entryDate')"/>
                 </div>
             </div>
             <a class="cursor-pointer" (click)="clearForm()" (click)="updateSearch()">Clear search</a>
         </form>
     </div>
 `,
-styles: [`
+    styles: [`
     h1, h3, h5 {
         font-weight: 300;
     }
@@ -85,53 +86,46 @@ export class SearchComponent implements OnInit {
     @Output() resultsChange = new EventEmitter();
     private gradeLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 'All'];
     private schoolYears = [2017, 2018, 2019, 'All'];
-    myForm: FormGroup;
+    private myForm: FormGroup;
 
     constructor(private studentService: StudentsService,
-                private formBuilder: FormBuilder,
-                private myElement: ElementRef) {
+        private formBuilder: FormBuilder,
+        private myElement: ElementRef) {
 
-            this.clearForm();
+        this.clearForm();
     }
 
     ngOnInit() {
         this.updateSearch();
         this.onKeyUpEvent();
-      }
+    }
 
-      clearForm() {
+    clearForm() {
         this.myForm = this.formBuilder.group({
             name: [''],
             studentId: [''],
             campus: [''],
             gradeLevel: new FormControl(null),
-            schoolYear: new FormControl(null)
-          });
-      }
-
-    gradeLevelOnChange(val) {
-        this.updateSearch();
-    }
-
-    schoolYearOnChange(val) {
-        this.updateSearch();
+            schoolYear: new FormControl(null),
+            entryDate: ['']
+        });
     }
 
     onKeyUpEvent() {
         fromEvent(this.myElement.nativeElement, 'keyup').pipe(
             // get value
             map((event: any) => {
-              this.studentService.emitLoadding(true);
-              return event.target.value;
+                this.studentService.emitLoadding(true);
+                return event.target.value;
             })
             // Time in milliseconds between key events
             , debounceTime(1000)
             // If previous query is diffent from current
             , distinctUntilChanged()
             // subscription for response
-            ).subscribe(() => {
-                this.updateSearch();
-            });
+        ).subscribe(() => {
+            this.updateSearch();
+        });
     }
 
     updateSearch() {

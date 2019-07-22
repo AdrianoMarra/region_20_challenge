@@ -53,9 +53,7 @@ public class StudentController {
         }
 
         try {
-            // Call the function bellow only to rebuid indexes.
-//            searchservice.initializeHibernateSearch();
-            searchResults = searchservice.fuzzySearch(name, studentId, schoolYear, campus, entryDate, gradeLevel);
+            searchResults = searchservice.executeSearch(name, studentId, schoolYear, campus, entryDate, gradeLevel);
 
         } catch (Exception ex) {
             System.out.println(ex);
