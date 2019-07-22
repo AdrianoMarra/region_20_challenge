@@ -4,6 +4,7 @@ import { StudentsService } from '../services/students.service';
 @Component({
   selector: 'app-results',
   template: `
+  <div class="dropdown-divider"></div>
 
   <h5 class="mx-5 mt-4">{{total}} students matching your search </h5>
 

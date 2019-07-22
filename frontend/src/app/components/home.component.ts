@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-home',
   template: `
   <app-search></app-search>
-  <div class="dropdown-divider"></div>
   <app-results></app-results>
   `
 })

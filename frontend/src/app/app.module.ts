@@ -12,6 +12,7 @@ import { MenuComponent } from './components/menu.component';
 import { SearchComponent } from './components/search.component';
 import { ResultsComponent } from './components/results.component';
 import { CardComponent } from './components/card.component';
+import { FooterComponent } from './components/footer.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { CardComponent } from './components/card.component';
     SearchComponent,
     ResultsComponent,
     CardComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

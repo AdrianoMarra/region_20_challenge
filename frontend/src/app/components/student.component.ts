@@ -10,7 +10,7 @@ import { debounceTime } from 'rxjs/operators';
   selector: 'app-student',
   template: `
   <div class="container">
-  <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null" style="position: fixed; width:90%; top: 10px;">{{ successMessage }}</ngb-alert>
+  <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null" style="position: fixed; width:90%; top: 10px; z-index:1;">{{ successMessage }}</ngb-alert>
   <h1 class="d-inline-block">Manage students</h1>
   <button type="button" class="btn btn-primary float-right mt-2 mb-4" (click)="clearForm()" (click)="open(content)">New student</button>
 
@@ -101,9 +101,6 @@ import { debounceTime } from 'rxjs/operators';
             <td>{{student.gradeLevel}}</td>
             <td>{{student.entryDate | date:'MM/dd/yyyy'}}</td>
             <td>
-              <!--button class="btn btn-primary mr-3" (click)="editStudent(student.id)" (click)="open(content)">Edit</button-->
-              <!--button class="btn btn-danger" (click)="deleteStudent(student.id)">Delete</button -->
-              
               <span (click)="editStudent(student.id)" (click)="open(content)">
                 <i class="fa fa-edit"></i>
               </span>
@@ -159,7 +156,7 @@ export class StudentComponent implements OnInit {
   private students: any;
   private errors: any;
   private schoolYears = [2017, 2018, 2019];
-  private gradeLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
+  private gradeLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   constructor(private fb: FormBuilder, private studentService: StudentsService, private modalService: NgbModal) {
     this.clearForm();
@@ -276,7 +273,7 @@ export class StudentComponent implements OnInit {
   displayErrors(err) {
     this.errors = [];
     if (err.status === 500) {
-      this.errors.push("*This student ID is already being used.");
+      this.errors.push('* This student ID is already being used.');
     } else {
       err.error.errors.forEach(error => {
         this.errors.push(error.defaultMessage);

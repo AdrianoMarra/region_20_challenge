@@ -39,7 +39,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
                     <label for="validationCustom03">Grade Level</label>
                     <div class="w-100">
                         <select formControlName="gradeLevel" (change)="updateSearch()">
-                            <option *ngFor="let gl of gradeLevels" [ngValue]="gl" [selected]="gradeLevels">{{gl}}</option>
+                            <option *ngFor="let gl of gradeLevels" [ngValue]="gl">{{gl}}</option>
                         </select>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
                     <label for="validationCustom02">School Year</label>
                     <div ngbDropdown class="d-inline-block w-100">
                         <select formControlName="schoolYear" (change)="updateSearch()">
-                            <option *ngFor="let sy of schoolYears" [ngValue]="sy" [selected]="schoolYears">{{sy}}</option>
+                            <option *ngFor="let sy of schoolYears" [ngValue]="sy">{{sy}}</option>
                         </select>
                     </div>
                 </div>
@@ -84,13 +84,13 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
     @Output() resultsChange = new EventEmitter();
-    private gradeLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 'All'];
-    private schoolYears = [2017, 2018, 2019, 'All'];
+    private gradeLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    private schoolYears = [2017, 2018, 2019];
     private myForm: FormGroup;
 
     constructor(private studentService: StudentsService,
-        private formBuilder: FormBuilder,
-        private myElement: ElementRef) {
+                private formBuilder: FormBuilder,
+                private myElement: ElementRef) {
 
         this.clearForm();
     }
@@ -120,8 +120,6 @@ export class SearchComponent implements OnInit {
             })
             // Time in milliseconds between key events
             , debounceTime(1000)
-            // If previous query is diffent from current
-            , distinctUntilChanged()
             // subscription for response
         ).subscribe(() => {
             this.updateSearch();
@@ -132,7 +130,7 @@ export class SearchComponent implements OnInit {
         const query = { ...this.myForm.value };
 
         for (const prop in query) {
-            if (!query[prop] || query[prop] === 'All') {
+            if (!query[prop]) {
                 delete query[prop];
             }
         }
