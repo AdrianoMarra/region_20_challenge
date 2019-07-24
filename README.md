@@ -1,5 +1,5 @@
 # Region 20 challenge
-API and UI for student search application.
+API and UI for a students search application.
 
 ## Technologies and frameworks used:
 * Angular and Bootstrap 4 for the UI.
